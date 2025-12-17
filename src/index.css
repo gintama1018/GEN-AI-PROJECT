@@ -1,0 +1,270 @@
+/* GeminiMind - Minimal Design System */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600&display=swap');
+
+:root {
+  /* Minimal Palette - Zinc/Slate derived */
+  --bg-base: #09090b;
+  /* Zinc 950 */
+  --bg-surface: #18181b;
+  /* Zinc 900 */
+  --bg-surface-hover: #27272a;
+  /* Zinc 800 */
+
+  --border-subtle: #27272a;
+  /* Zinc 800 */
+  --border-active: #3f3f46;
+  /* Zinc 700 */
+
+  /* Text */
+  --text-primary: #fafafa;
+  /* Zinc 50 */
+  --text-secondary: #a1a1aa;
+  /* Zinc 400 */
+  --text-tertiary: #52525b;
+  /* Zinc 600 */
+
+  /* Accents */
+  --accent-primary: #fafafa;
+  /* White / Zinc 50 */
+  --accent-inverse: #09090b;
+  /* Black / Zinc 950 */
+  --accent-glow: rgba(255, 255, 255, 0.1);
+
+  /* Status */
+  --error: #ef4444;
+  --success: #10b981;
+
+  /* Typography */
+  --font-ui: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Dimensions */
+  --sidebar-w-collapsed: 72px;
+  --sidebar-w-expanded: 240px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface-hover);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Typography Overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-ui);
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+/* Component: Glass Panel -> Minimal Card */
+.glass-panel,
+.glass-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--border-active);
+  transform: translateY(-1px);
+}
+
+/* Buttons */
+.btn-new,
+button {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-new:active,
+button:active {
+  transform: scale(0.98);
+}
+
+.btn-accent {
+  background: var(--accent-primary);
+  color: var(--accent-inverse);
+  border: 1px solid var(--accent-primary);
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  opacity: 0.9;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.btn-glass {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.btn-glass:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-active);
+}
+
+/* Inputs */
+.input-field {
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-family: var(--font-body);
+  transition: border-color 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--text-secondary);
+}
+
+/* Inputs Placeholder */
+::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Layout Architecture */
+.layout-container {
+  display: flex;
+  height: 100vh;
+  position: relative;
+}
+
+/* Sidebar - Overlay Model to prevent layout shifts */
+.sidebar {
+  width: var(--sidebar-w-collapsed);
+  height: 100vh;
+  background: var(--bg-base);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+  z-index: 100;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: sticky;
+  /* Keeps it on the left */
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+/* Expansion logic: 
+   If we want it to NOT push content, we can use absolute on hover, 
+   OR we can accept a small push if it's smoother.
+   Given the prompt "squashes your entire page", let's try a hybrid: 
+   The sidebar container stays fixed width, but the visible sidebar expands OVER the content.
+*/
+
+.sidebar:hover {
+  width: var(--sidebar-w-expanded);
+  background: var(--bg-base);
+  /* Ensure opacity when overlapping */
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  /* Takes it out of flow on hover */
+}
+
+/* Sidebar Items */
+.sidebar-item {
+  width: 90%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.sidebar-item:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.sidebar-item.active {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+  border-left: 3px solid var(--accent-primary);
+}
+
+/* Content Area */
+.content-area {
+  flex: 1;
+  padding: 2rem 3rem;
+  /* More generous whitespace */
+  overflow-y: auto;
+  margin-left: var(--sidebar-w-collapsed);
+  /* Reserve space for the collapsed state always */
+  /* If sidebar hovers to absolute, this margin stays, preventing jump */
+}
+
+/* Utilities */
+.text-gradient {
+  /* Minimal gradient or just solid for "Sleek" look */
+  background: linear-gradient(135deg, #fff, #a1a1aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
